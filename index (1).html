@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thales Gás – Pediu? Chegou!</title>
+<meta name="description" content="Gás e água mineral com entrega rápida. Atendimento até às 21h.">
+<meta name="theme-color" content="#1e7a34">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{
+    --verde:#1e7a34; --verde-esc:#14561f; --laranja:#c2500d; --whats:#25d366;
+    --bg:#f4f7f2; --card:#fff; --txt:#1c2a1f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#101a12; --card:#1a281d; --txt:#eef5ee; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);
+    padding-bottom:110px;-webkit-tap-highlight-color:transparent}
+  header{background:linear-gradient(160deg,var(--verde),var(--verde-esc));color:#fff;text-align:center;
+    padding:calc(24px + env(safe-area-inset-top,0px)) 20px 70px}
+  .logo{width:180px;height:180px;border-radius:28px;object-fit:contain;border:4px solid #fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  header h1{margin-top:14px;font-size:1.9rem}
+  header p{opacity:.92;margin-top:4px}
+  .badge{display:inline-block;margin-top:12px;background:var(--laranja);padding:6px 14px;border-radius:999px;font-weight:700;font-size:.9rem}
+  main{max-width:560px;margin:-44px auto 0;padding:0 16px}
+  .card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+  .card h2{font-size:1.1rem;margin-bottom:12px;color:var(--verde)}
+  @media (prefers-color-scheme: dark){ .card h2{color:#7fe08f} }
+  .produtos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .produto{text-align:center;padding:16px 8px;border-radius:14px;background:rgba(30,122,52,.08);font-weight:600}
+  .produto span{display:block;font-size:2.2rem;margin-bottom:6px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;margin-bottom:10px;
+    border-radius:14px;background:var(--whats);color:#fff;text-decoration:none;font-weight:700;font-size:1.05rem}
+  .btn:active{transform:scale(.98)}
+  .btn small{display:block;font-weight:500;opacity:.9}
+  .pagto{display:flex;flex-wrap:wrap;gap:8px}
+  .pagto span{background:rgba(30,122,52,.1);padding:8px 14px;border-radius:999px;font-weight:600;font-size:.9rem}
+  footer{text-align:center;font-size:.85rem;opacity:.7;padding:10px 16px}
+
+  /* Botão flutuante do WhatsApp */
+  .fab-wrap{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;
+    display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+  .fab{width:64px;height:64px;border-radius:50%;border:0;background:var(--whats);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35);
+    animation:pulse 2s infinite}
+  .fab svg{width:36px;height:36px;fill:#fff}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6),0 6px 18px rgba(0,0,0,.35)}
+    70%{box-shadow:0 0 0 18px rgba(37,211,102,0),0 6px 18px rgba(0,0,0,.35)}
+    100%{box-shadow:0 0 0 0 rgba(37,211,102,0),0 6px 18px rgba(0,0,0,.35)}}
+  .menu{display:none;flex-direction:column;gap:8px}
+  .menu.aberto{display:flex}
+  .menu a{background:#fff;color:#1c2a1f;text-decoration:none;padding:12px 16px;border-radius:14px;font-weight:700;
+    box-shadow:0 4px 14px rgba(0,0,0,.3);display:flex;align-items:center;gap:8px}
+  .menu a::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--whats)}
+  .dica{background:#fff;color:#1c2a1f;padding:8px 12px;border-radius:12px;font-size:.85rem;font-weight:600;
+    box-shadow:0 4px 14px rgba(0,0,0,.3)}
+  .dica.oculta{display:none}
+
+  .produto{border:0;font:inherit;color:inherit;cursor:pointer;width:100%}
+  .produto:active{transform:scale(.97)}
+  .produto small{display:block;font-weight:500;font-size:.78rem;opacity:.75;margin-top:2px}
+  .hint{font-size:.85rem;opacity:.75;margin:-4px 0 12px}
+
+  /* Banner instalar app */
+  .install{position:fixed;left:12px;right:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:80;max-width:536px;margin:0 auto;
+    background:var(--card);color:var(--txt);border-radius:16px;padding:12px;display:none;align-items:center;gap:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);border:2px solid var(--verde)}
+  .install.mostrar{display:flex}
+  .install img{width:48px;height:48px;border-radius:12px;flex:none}
+  .install .t{flex:1;font-size:.9rem;line-height:1.25}
+  .install .t b{display:block;font-size:1rem}
+  .install button{border:0;border-radius:12px;padding:10px 14px;font-weight:700;font-size:.95rem;cursor:pointer}
+  .install .ok{background:var(--verde);color:#fff}
+  .install .x{background:transparent;color:var(--txt);opacity:.6;padding:8px;font-size:1.2rem}
+
+  /* Seletor de atendente */
+  .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;display:none;align-items:flex-end;justify-content:center}
+  .sheet-bg.aberto{display:flex}
+  .sheet{background:var(--card);color:var(--txt);width:100%;max-width:560px;border-radius:22px 22px 0 0;
+    padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));animation:sobe .2s ease-out}
+  @keyframes sobe{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+  .sheet h3{font-size:1.15rem;margin-bottom:4px}
+  .sheet p{opacity:.75;margin-bottom:14px;font-size:.92rem}
+  .sheet .btn{margin-bottom:10px}
+  .sheet .fechar{width:100%;border:0;background:transparent;color:var(--txt);opacity:.7;padding:10px;font-size:.95rem;cursor:pointer}
+
+  .baixar{display:flex;align-items:center;gap:12px}
+  .baixar img{width:56px;height:56px;border-radius:14px;flex:none}
+  .baixar .t{flex:1;font-size:.9rem;line-height:1.3}
+  .baixar .t b{display:block;font-size:1rem}
+  .baixar button{border:0;border-radius:12px;padding:12px 16px;background:var(--verde);color:#fff;font-weight:700;font-size:.95rem;cursor:pointer}
+  .baixar .ajuda{display:none;flex-basis:100%;font-size:.88rem;background:rgba(30,122,52,.1);padding:10px 12px;border-radius:10px}
+  .baixar.ver-ajuda{flex-wrap:wrap}
+  .baixar.ver-ajuda .ajuda{display:block}
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="logo.jpg" alt="Logo Thales Gás">
+  <h1>Thales Gás</h1>
+  <p>Pediu? Chegou!</p>
+  <span class="badge">⏰ Atendimento até às 21h</span>
+</header>
+
+<main>
+  <section class="card">
+    <h2>O que você quer pedir?</h2>
+    <p class="hint">Toque no produto e fale direto no WhatsApp.</p>
+    <div class="produtos">
+      <button class="produto" type="button" data-produto="Gás de cozinha"><span>🔥</span>Gás de cozinha<small>Toque para pedir</small></button>
+      <button class="produto" type="button" data-produto="Água mineral 20L"><span>💧</span>Água mineral 20L<small>Toque para pedir</small></button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Peça agora pelo WhatsApp</h2>
+    <a class="btn" data-num="5511952937075" href="#"><span>💬</span><span>(11) 95293-7075<small>Toque para chamar</small></span></a>
+    <a class="btn" data-num="5511965912989" href="#"><span>💬</span><span>(11) 96591-2989<small>Toque para chamar</small></span></a>
+  </section>
+
+  <section class="card">
+    <h2>Formas de pagamento</h2>
+    <div class="pagto"><span>💳 Visa</span><span>💳 Mastercard</span><span>⚡ Pix</span></div>
+  </section>
+  <section class="card baixar" id="baixarCard">
+    <img src="icon-192.png" alt="">
+    <div class="t"><b>📲 Baixar o app</b>Fique com o Thales Gás na tela do seu celular.</div>
+    <button id="baixarBtn" type="button">Baixar</button>
+    <div class="ajuda" id="baixarAjuda"></div>
+  </section>
+</main>
+
+<footer>Revendedor Liquigás · Thales Gás</footer>
+
+<!-- Banner instalar app -->
+<div class="install" id="install" role="dialog" aria-label="Instalar app">
+  <img src="icon-192.png" alt="">
+  <div class="t"><b>Instale o app Thales Gás</b><span id="installTxt">Peça mais rápido, direto da tela inicial.</span></div>
+  <button class="ok" id="installBtn" type="button">Instalar</button>
+  <button class="x" id="installX" type="button" aria-label="Fechar">✕</button>
+</div>
+
+<!-- Escolha do atendente -->
+<div class="sheet-bg" id="sheetBg">
+  <div class="sheet" role="dialog" aria-labelledby="sheetT">
+    <h3 id="sheetT">Pedir: <span id="sheetProd"></span></h3>
+    <p>Escolha com quem quer falar:</p>
+    <a class="btn" data-num="5511952937075" data-pedido href="#"><span>💬</span><span>(11) 95293-7075</span></a>
+    <a class="btn" data-num="5511965912989" data-pedido href="#"><span>💬</span><span>(11) 96591-2989</span></a>
+    <button class="fechar" id="sheetX" type="button">Cancelar</button>
+  </div>
+</div>
+
+<!-- Botão flutuante -->
+<div class="fab-wrap">
+  <div class="dica" id="dica">Fale com a gente! 👋</div>
+  <div class="menu" id="menu">
+    <a data-num="5511952937075" href="#">(11) 95293-7075</a>
+    <a data-num="5511965912989" href="#">(11) 96591-2989</a>
+  </div>
+  <button class="fab" id="fab" aria-label="Falar no WhatsApp" aria-expanded="false">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.03c0 2.12.55 4.19 1.6 6.01L4 29l8.13-1.57a12.03 12.03 0 0 0 3.91.65C22.68 28.08 28 22.68 28 16.05 28 9.4 22.68 3 16.04 3zm0 22.04c-1.2 0-2.37-.32-3.4-.93l-.24-.15-4.83.93.96-4.7-.16-.25a9.98 9.98 0 0 1-1.54-5.3c0-5.5 4.5-9.98 10.03-9.98 5.52 0 10.02 4.48 10.02 9.99 0 5.5-4.5 9.99-10.02 9.99zm5.5-7.48c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.18.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.67-2.08-.18-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.68-1.63-.93-2.24-.25-.58-.5-.5-.68-.5h-.58c-.2 0-.53.08-.8.38-.28.3-1.05 1.02-1.05 2.5 0 1.47 1.08 2.9 1.23 3.1.15.2 2.1 3.2 5.1 4.5.72.3 1.28.5 1.7.63.72.23 1.37.2 1.88.12.58-.08 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35z"/></svg>
+  </button>
+</div>
+
+<script>
+  const MSG = "Olá, Thales Gás! Gostaria de fazer um pedido.";
+  const link = (num, txt) => "https://wa.me/" + num + "?text=" + encodeURIComponent(txt);
+  const store = {
+    get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+    set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  };
+
+  // Links gerais de WhatsApp
+  document.querySelectorAll("[data-num]:not([data-pedido])").forEach(a => {
+    a.href = link(a.dataset.num, MSG);
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+
+  // Escolha de produto -> escolha de atendente -> WhatsApp com o produto
+  const sheetBg = document.getElementById("sheetBg");
+  const pedidoLinks = document.querySelectorAll("[data-pedido]");
+  let produto = "";
+  function abrirSheet(p){
+    produto = p;
+    document.getElementById("sheetProd").textContent = p;
+    const txt = "Olá, Thales Gás! Gostaria de pedir: " + p + ".";
+    pedidoLinks.forEach(a => { a.href = link(a.dataset.num, txt); a.target = "_blank"; a.rel = "noopener"; });
+    sheetBg.classList.add("aberto");
+  }
+  const fecharSheet = () => sheetBg.classList.remove("aberto");
+  document.querySelectorAll("[data-produto]").forEach(b => b.addEventListener("click", () => abrirSheet(b.dataset.produto)));
+  pedidoLinks.forEach(a => a.addEventListener("click", () => setTimeout(fecharSheet, 150)));
+  document.getElementById("sheetX").addEventListener("click", fecharSheet);
+  sheetBg.addEventListener("click", e => { if (e.target === sheetBg) fecharSheet(); });
+
+  // Botão flutuante
+  const fab = document.getElementById("fab");
+  const menu = document.getElementById("menu");
+  const dica = document.getElementById("dica");
+  const fecharMenu = () => { menu.classList.remove("aberto"); fab.setAttribute("aria-expanded","false"); };
+  fab.addEventListener("click", e => {
+    e.stopPropagation();
+    const aberto = menu.classList.toggle("aberto");
+    fab.setAttribute("aria-expanded", aberto);
+    dica.classList.add("oculta");
+  });
+  document.addEventListener("click", e => { if (!menu.contains(e.target)) fecharMenu(); });
+  setTimeout(() => dica.classList.add("oculta"), 6000);
+
+  // Instalar app
+  const box = document.getElementById("install");
+  const btn = document.getElementById("installBtn");
+  const txt = document.getElementById("installTxt");
+  const jaInstalado = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const dispensado = () => { const t = +store.get("installDismiss") || 0; return Date.now() - t < 7*864e5; };
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  let promptEv = null;
+
+  function mostrar(){ if (!jaInstalado && !dispensado()) box.classList.add("mostrar"); }
+  document.getElementById("installX").addEventListener("click", () => { box.classList.remove("mostrar"); store.set("installDismiss", Date.now()); });
+
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); promptEv = e; mostrar(); });
+  window.addEventListener("appinstalled", () => box.classList.remove("mostrar"));
+  const card = document.getElementById("baixarCard");
+  const ajuda = document.getElementById("baixarAjuda");
+  if (jaInstalado) card.style.display = "none";
+
+  async function instalar(){
+    if (promptEv) {
+      promptEv.prompt();
+      await promptEv.userChoice.catch(() => {});
+      promptEv = null; box.classList.remove("mostrar");
+      return;
+    }
+    const passos = ios
+      ? "Toque em <b>Compartilhar</b> ⬆️ (barra do Safari) e depois em <b>Adicionar à Tela de Início</b>."
+      : "Toque nos três pontinhos <b>⋮</b> do navegador e escolha <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>.";
+    ajuda.innerHTML = passos;
+    card.classList.add("ver-ajuda");
+    txt.innerHTML = passos;
+    btn.style.display = "none";
+  }
+  btn.addEventListener("click", instalar);
+  document.getElementById("baixarBtn").addEventListener("click", instalar);
+  window.addEventListener("appinstalled", () => { card.style.display = "none"; });
+  // iPhone não tem beforeinstallprompt: mostra o convite com instruções
+  if (ios && !jaInstalado) setTimeout(mostrar, 1200);
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  }
+</script>
+</body>
+</html>
