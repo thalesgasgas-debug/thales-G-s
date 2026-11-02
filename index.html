@@ -7,8 +7,8 @@
 <meta name="description" content="Gás e água mineral com entrega rápida. Atendimento até às 21h.">
 <meta name="theme-color" content="#1e7a34">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./favicon.png">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-512.png">
 <style>
   :root{--verde:#1e7a34;--verde-esc:#14561f;--laranja:#c2500d;--whats:#25d366;--bg:#f4f7f2;--card:#fff;--txt:#1c2a1f}
   @media (prefers-color-scheme: dark){:root{--bg:#101a12;--card:#1a281d;--txt:#eef5ee}}
@@ -90,7 +90,7 @@
   </section>
  
   <section class="card baixar" id="baixarCard">
-    <img src="./icon-192.png" alt="">
+    <img src="./icon-192.png" alt="Logo Thales Gás">
     <div class="t"><b>📲 Baixar o app</b>Fique com o Thales Gás na tela do seu celular.</div>
     <button class="verde" id="baixarBtn" type="button">Baixar</button>
   </section>
@@ -110,69 +110,20 @@
     <img src="./icon-192.png" alt="Logo Thales Gás">
     <h3 id="mT">Instalar o app Thales Gás</h3>
     <p>Tenha o Thales Gás na tela do seu celular e peça gás e água com um toque.</p>
-    <div class="passos" id="passos"></div>
-    <button class="verde" id="instalarBtn" type="button">Instalar</button>
-    <button class="nao" id="naoBtn" type="button">Agora não</button>
+    <div class="passos" id="modalPassos"></div>
+    <button class="verde" id="modalInstalarBtn" type="button">Instalar Agora</button>
+    <button class="nao" id="modalFecharBtn" type="button">Não</button>
   </div>
 </div>
- 
+
 <script>
-  // Número que recebe os pedidos (só o botão usa; não aparece na tela)
-  const NUM = "5511952937075";
- 
-  // Gás / Água -> WhatsApp direto com o produto escolhido
-  document.querySelectorAll("[data-produto]").forEach(a => {
-    const msg = "Olá, Thales Gás! Gostaria de pedir: " + a.dataset.produto + ".";
-    a.href = "https://wa.me/" + NUM + "?text=" + encodeURIComponent(msg);
-    a.target = "_blank";
-    a.rel = "noopener";
-  });
- 
-  // Instalar app
-  const store = {
-    get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
-    set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-  };
-  const modal = document.getElementById("modalBg");
-  const passos = document.getElementById("passos");
-  const instalarBtn = document.getElementById("instalarBtn");
-  const card = document.getElementById("baixarCard");
-  const jaInstalado = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
-  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  let promptEv = null;
- 
-  if (jaInstalado) card.style.display = "none";
- 
-  const abrir = () => modal.classList.add("aberto");
-  const fechar = () => modal.classList.remove("aberto");
- 
-  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); promptEv = e; });
-  window.addEventListener("appinstalled", () => { fechar(); card.style.display = "none"; });
- 
-  document.getElementById("baixarBtn").addEventListener("click", abrir);
-  document.getElementById("naoBtn").addEventListener("click", () => { fechar(); store.set("instDismiss", Date.now()); });
-  modal.addEventListener("click", e => { if (e.target === modal) fechar(); });
- 
-  instalarBtn.addEventListener("click", async () => {
-    if (promptEv) {
-      promptEv.prompt();
-      await promptEv.userChoice.catch(() => {});
-      promptEv = null; fechar();
-      return;
-    }
-    passos.innerHTML = ios
-      ? "Toque em <b>Compartilhar</b> ⬆️ (barra do Safari) e depois em <b>Adicionar à Tela de Início</b>."
-      : "Toque nos três pontinhos <b>⋮</b> do navegador e escolha <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>.";
-    passos.style.display = "block";
-    instalarBtn.style.display = "none";
-  });
- 
-  // Abre a janela sozinha na primeira visita (e de novo só depois de 7 dias)
-  const t = +store.get("instDismiss") || 0;
-  if (!jaInstalado && Date.now() - t > 7*864e5) setTimeout(abrir, 1500);
- 
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+  // Script de inicialização e controle do Service Worker existente no projeto
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker ativo.', reg.scope))
+        .catch(err => console.log('Erro no Service Worker.', err));
+    });
   }
 </script>
 </body>
