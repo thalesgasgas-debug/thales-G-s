@@ -1,0 +1,17 @@
+THALES GÁS - PACOTE COMPLETO (v8)
+
+Ícones substituídos pela arte oficial (Thales Gás - Pediu? Chegou!).
+
+Arquivos:
+- index.html, manifest.webmanifest, sw.js (site/app)
+- logo.jpg (logo do cabeçalho)
+- icon-192.png, icon-512.png (ícone do app na tela do celular)
+- icon-maskable-192.png, icon-maskable-512.png (Android com ícone redondo/adaptável)
+- apple-touch-icon.png (iPhone), favicon.png (aba do navegador)
+- produto-gas.png, produto-agua.png
+
+COMO PUBLICAR
+1. Envie TODOS os arquivos para a raiz do repositório GitHub Pages, substituindo os antigos.
+2. No celular: feche o app, REMOVA o atalho antigo da tela inicial e instale de novo
+   (Chrome > menu > Instalar app / Adicionar à tela inicial; no iPhone: Safari > Compartilhar > Adicionar à Tela de Início).
+   O celular guarda o ícone antigo até reinstalar.
