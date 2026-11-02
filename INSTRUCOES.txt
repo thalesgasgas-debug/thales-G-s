@@ -1,0 +1,16 @@
+LOGO OFICIAL THALES GÁS APLICADO
+
+O arquivo de logo enviado foi aplicado em:
+- logo.jpg (logo do cabeçalho do site)
+- icon-192.png e icon-512.png (ícones do app)
+- icon-maskable-192.png e icon-maskable-512.png (ícones adaptáveis)
+- favicon.png e apple-touch-icon.png
+
+Também foi atualizado o cache do Service Worker para v6.
+Envie TODOS os arquivos desta pasta para a raiz do repositório GitHub Pages,
+substituindo os arquivos anteriores.
+
+Depois da publicação, feche o app. Se o ícone/splash antigo continuar no celular,
+remova o atalho instalado e instale novamente pelo Chrome. A tela de abertura
+do Android é parcialmente controlada pelo próprio sistema; o ícone e as cores
+vêm dos recursos do app/manifesto.
