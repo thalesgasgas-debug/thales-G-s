@@ -1,0 +1,21 @@
+PACOTE FINAL THALES GÁS
+
+Este pacote já inclui o index.html enviado por você, com os caminhos dos arquivos
+de imagem ajustados, além das fotos convertidas para PNG e do cache atualizado.
+
+COMO PUBLICAR:
+1. Abra o repositório do GitHub Pages usado pelo aplicativo.
+2. Entre na pasta raiz onde já está o index.html.
+3. Envie TODOS os arquivos deste pacote para essa mesma raiz.
+4. Escolha substituir os arquivos existentes quando o GitHub perguntar.
+5. Aguarde a publicação do GitHub Pages.
+6. No celular, feche o app e abra o endereço do site no Chrome. Atualize a página.
+7. Se o atalho instalado continuar mostrando a versão antiga, remova o atalho e
+   instale novamente pelo menu do Chrome.
+
+ATENÇÃO SOBRE O LOGO:
+Você não enviou o arquivo original do logo. O arquivo logo.jpg deste pacote é um
+logo provisório criado para evitar imagem quebrada. Se quiser o logo original,
+envie a imagem dele que eu substituo.
+
+Mantenha todos estes arquivos na mesma pasta do index.html.
