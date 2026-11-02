@@ -1,44 +1,62 @@
-const CACHE = 'thales-gas-v6';
-const FILES = [
-  './', './index.html', './logo.jpg', './manifest.webmanifest',
-  './icon-192.png', './icon-512.png',
-  './icon-maskable-192.png', './icon-maskable-512.png',
-  './produto-gas.png', './produto-agua.png',
-  './favicon.png', './apple-touch-icon.png'
+// 1. Sempre que mudar alguma imagem ou código, mude o número da versão abaixo (ex: v2, v3...)
+const CACHE_NAME = 'thales-gas-cache-v2';
+
+// 2. Lista de arquivos que o Service Worker vai armazenar (baseado no seu projeto)
+const ASSETS_TO_CACHE = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './logo.jpg',
+  './produto-água.png',
+  './produto-gás.png',
+  './favicon.png',
+  './apple-touch-icon.png',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-192.png',
+  './icon-maskable-512.png'
 ];
-self.addEventListener('install', event => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE);
-    await Promise.all(FILES.map(async file => {
-      try { await cache.add(file); } catch (error) {}
-    }));
-    await self.skipWaiting();
-  })());
+
+// Instalação do Service Worker e armazenamento dos novos arquivos
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('Armazenando novos arquivos no cache...');
+      return cache.addAll(ASSETS_TO_CACHE);
+    }).then(() => {
+      // Força o Service Worker atual a se tornar ativo imediatamente
+      return self.skipWaiting();
+    })
+  );
 });
-self.addEventListener('activate', event => {
-  event.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(key => key.startsWith('thales-gas-') && key !== CACHE)
-      .map(key => caches.delete(key)));
-    await self.clients.claim();
-  })());
+
+// Ativação: Aqui limpamos de forma AUTOMÁTICA o cache com a imagem antiga da gota
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            console.log('Limpando cache antigo de arquivos:', cache);
+            return caches.delete(cache);
+          }
+        })
+      );
+    }).then(() => {
+      // Garante que o novo Service Worker controle a página imediatamente
+      return self.clients.claim();
+    })
+  );
 });
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return;
-  event.respondWith((async () => {
-    try {
-      const response = await fetch(event.request);
-      if (response && response.ok) {
-        const cache = await caches.open(CACHE);
-        cache.put(event.request, response.clone());
+
+// Estratégia de Cache: Serve os arquivos do cache para o app abrir instantaneamente
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
       }
-      return response;
-    } catch (error) {
-      const cached = await caches.match(event.request);
-      if (cached) return cached;
-      throw error;
-    }
-  })());
+      return fetch(event.request);
+    })
+  );
 });
